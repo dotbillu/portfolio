@@ -39,10 +39,10 @@ const SkillItem = ({ skill, scrollYProgress, skillIndex, totalSkills }: SkillIte
 
 const skills = {
   Languages: ["TypeScript", "JavaScript", "C++", "Rust", "Lua"],
-  Frontend: ["React", "Next.js", "React Three Fiber", "Tailwind CSS"],
-  "Backend & DB": ["Node.js", "Express.js", "MongoDB"],
+  Frontend: ["React", "Next.js", "React Three Fiber", "Tailwind CSS","Jotai"],
+  "Backend & DB": ["Node.js", "Express.js", "MongoDB","PostgreSQL"],
   Web3: ["Solana"],
-  Tools: ["Arch Linux", "Git & GitHub", "Neovim", "Docker"],
+  "My Tools": ["Arch Linux", "Git & GitHub", "Neovim", "Docker"],
 };
 
 export const SkillsContent = ({ scrollYProgress }: SkillsContentProps) => {
