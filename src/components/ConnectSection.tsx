@@ -36,7 +36,7 @@ export function ConnectSection() {
             style={{ opacity: textOpacity, scale: textScale }}
           >
             <h2 className="font-anton text-7xl md:text-9xl text-center text-[#4D2D9A] tracking-tighter">
-              CONNECT
+              LETS CONNECT!
             </h2>
           </motion.div>
 
