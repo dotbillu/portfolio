@@ -22,10 +22,23 @@ export const HeroContent = ({ scrollYProgress }: HeroContentProps) => {
         <p>WELCOME !</p>
       </h1>
       <p className="mt-6 text-xl text-gray-700 max-w-2xl">
-        Hi! I&apos;m Abhay. A software engineer exploring the delicate art of shaping
-        ideas into experiences that resonate.
+        I’m Abhay, a software engineer trying to be part of the ideas and
+        projects that actually matter, learning and building along the way.
       </p>
-     
+
+      <motion.div
+        className="mt-12 text-sm uppercase tracking-widest text-slate-500"
+        animate={{ y: ["40px", "50px"] }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        }}
+      >
+        Know Me ↓
+      </motion.div>
     </motion.div>
   );
 };
+
