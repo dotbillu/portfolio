@@ -26,13 +26,22 @@ const cardsData = [
   },
   {
     id: "card-3",
+    title: "EcoSphere",
+    text: "A social platform designed to gamify environmental action. Users can post gigs, create rooms on a live map, and connect through a Twitter-like feed. Built with Next.js, Leaflet.js, Node.js, and MongoDB. Currently under development.",
+    img: "/ecosphere.png",
+    links: [
+      { href: "https://github.com/dotbillu/EcoSphere", label: "GitHub" },
+    ],
+  },
+  {
+    id: "card-4",
     title: "Kyoka",
     text: "A live chess analysis tool designed to track and analyze games in real-time. This project is currently in development; follow the progress on GitHub.",
     img: "/Kyoka.png",
     links: [{ href: "https://github.com/dotbillu/KYOKA", label: "GitHub" }],
   },
   {
-    id: "card-4",
+    id: "card-5",
     title: "TrendWise",
     text: "A smart content performance analyzer to track and visualize online article trends. Features AI-backed insights, keyword extraction, and visual dashboards.",
     img: "/trendwise.png",
@@ -55,6 +64,7 @@ export function PortfolioDeck() {
     damping: 35,
     mass: 0.5,
   });
+
   const headerRange = [0, 0.2];
   const cardsAppearRange = [0.2, 0.4];
   const cardStackRange = [0.4, 1];
@@ -112,3 +122,4 @@ export function PortfolioDeck() {
     </div>
   );
 }
+
