@@ -40,7 +40,6 @@ export const Card3D = ({ imageUrl }: Card3DProps) => {
         clearcoatRoughness={0.0}
         roughness={0.25}
         metalness={0.0}
-        reflectivity={0.2}
         side={THREE.FrontSide}
         toneMapped={false}
       />
