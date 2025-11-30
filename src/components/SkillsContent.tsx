@@ -1,36 +1,19 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, useTransform, MotionValue } from "framer-motion";
 
 interface SkillsContentProps {
   scrollYProgress: MotionValue<number>;
 }
 
-interface SkillItemProps {
-  skill: string;
-  scrollYProgress: MotionValue<number>;
-  skillIndex: number;
-  totalSkills: number;
-}
-
-const SkillItem = ({ skill, scrollYProgress, skillIndex, totalSkills }: SkillItemProps) => {
-  const start = 0.3 + (skillIndex / totalSkills) * 0.6;
-  const end = start + 0.1;
-  const opacity = useTransform(
-    scrollYProgress,
-    [start, end],
-    [0.1, 1],
-  );
-  const y = useTransform(
-    scrollYProgress,
-    [start, end],
-    ["10px", "0px"],
-  );
-
+const SkillItem = ({ skill, index }: { skill: string; index: number }) => {
   return (
     <motion.li
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }} 
+      transition={{ duration: 0.4, delay: index * 0.05 }}
       className="text-3xl md:text-4xl font-medium text-gray-900"
-      style={{ opacity, y }}
     >
       {skill}
     </motion.li>
@@ -39,51 +22,55 @@ const SkillItem = ({ skill, scrollYProgress, skillIndex, totalSkills }: SkillIte
 
 const skills = {
   Languages: ["TypeScript", "JavaScript", "C++", "Rust", "Lua"],
-  Frontend: ["React", "Next.js", "React Three Fiber", "Tailwind CSS","Jotai"],
-  "Backend & DB": ["Node.js", "Express.js", "MongoDB","PostgreSQL"],
+  Frontend: ["React", "Next.js", "React Three Fiber", "Tailwind CSS", "Jotai"],
+  "Backend & DB": ["Node.js", "Express.js", "MongoDB", "PostgreSQL"],
   Web3: ["Solana"],
   "My Tools": ["Arch Linux", "Git & GitHub", "Neovim", "Docker"],
 };
 
 export const SkillsContent = ({ scrollYProgress }: SkillsContentProps) => {
-  const allSkills = useMemo(() => Object.values(skills).flat(), []);
-  const totalSkills = allSkills.length;
+  const [isMobile, setIsMobile] = useState(false);
 
-  const skillsContainerOpacity = useTransform(
-    scrollYProgress,
-    [0.2, 0.3],
-    [0, 1],
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  const skillsContainerOpacity = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
+  const yDesktop = useTransform(scrollYProgress, [0.15, 0.25], ["50px", "0px"]);
+  const yMobile = useTransform(scrollYProgress, 
+    [0.15, 0.25, 0.8],
+    ["50px", "0px", "-800px"] 
   );
-  const skillsContainerY = useTransform(
-    scrollYProgress,
-    [0.2, 0.3],
-    ["50px", "0px"],
-  );
+
+  const skillsContainerY = isMobile ? yMobile : yDesktop;
+
+  const pointerEvents = useTransform(scrollYProgress, (v) => v > 0.15 ? "auto" : "none");
 
   return (
     <motion.div
-      className="max-w-5xl w-full p-8 pt-24 pb-24"
-      style={{ opacity: skillsContainerOpacity, y: skillsContainerY }}
+      className="max-w-5xl w-full p-8 pt-32 pb-48 md:pt-24 md:pb-24 mt-20 md:mt-0"
+      style={{ 
+        opacity: skillsContainerOpacity, 
+        y: skillsContainerY,
+        pointerEvents 
+      }}
     >
-      <div className="flex flex-wrap gap-x-12 gap-y-8">
+      <div className="flex flex-col md:flex-row md:flex-wrap gap-y-12 md:gap-x-12 md:gap-y-10">
         {Object.entries(skills).map(([category, items]) => (
-          <div key={category} className="min-w-[200px] text-left">
-            <h3 className="text-xl font-semibold text-gray-500 uppercase tracking-wider mb-4">
+          <div key={category} className="w-full md:w-auto md:min-w-[200px] text-left">
+            <h3 className="text-xl font-semibold text-gray-500 uppercase tracking-wider mb-4 border-b md:border-none pb-2 md:pb-0 border-gray-200">
               {category}
             </h3>
             <ul className="space-y-3">
-              {items.map((skill) => {
-                const skillIndex = allSkills.indexOf(skill);
-                return (
-                  <SkillItem
-                    key={skill}
-                    skill={skill}
-                    scrollYProgress={scrollYProgress}
-                    skillIndex={skillIndex}
-                    totalSkills={totalSkills}
-                  />
-                );
-              })}
+              {items.map((skill, index) => (
+                <SkillItem
+                  key={skill}
+                  skill={skill}
+                  index={index}
+                />
+              ))}
             </ul>
           </div>
         ))}

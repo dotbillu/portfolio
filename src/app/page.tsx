@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   motion,
   useScroll,
@@ -10,49 +10,54 @@ import { Navbar } from "../components/Navbar";
 import { HeroAndSkillsContainer } from "../components/HeroAndSkillsContainer";
 import { PortfolioDeck } from "../components/PortfolioDeck";
 import { ConnectSection } from "../components/ConnectSection";
+import { useFullScreen } from "../context/FullScreenContext";
 
 export default function Home() {
-  const [navVariant, setNavVariant] = useState<"hero" | "island" | "hidden">("hero");
   const { scrollYProgress: pageScrollProgress } = useScroll();
   const connectSectionRef = useRef(null);
+  const { isFullScreen } = useFullScreen();
+
   const { scrollYProgress: transitionProgress } = useScroll({
     target: connectSectionRef,
     offset: ["start end", "start center"],
   });
+
   const bgClipPath = useTransform(
     transitionProgress,
     [0, 0.5],
-    ["inset(0% 0% 0% 0%)", "inset(50% 50% 50% 50%)"],
+    ["inset(0% 0% 0% 0%)", "inset(50% 50% 50% 50%)"]
   );
+
   const thumbY = useTransform(pageScrollProgress, [0, 1], ["0%", "300%"]);
 
   return (
     <>
-      <div className="fixed top-1/2 right-4 z-50 h-32 w-4 -translate-y-1/2">
-        <div className="relative h-full w-full rounded-full bg-slate-800 p-0.5">
-          <motion.div
-            className="h-1/4 w-full rounded-full bg-slate-200"
-            style={{ y: thumbY }}
-          />
+      {!isFullScreen && (
+        <div className="fixed top-1/2 right-4 z-50 h-32 w-4 -translate-y-1/2">
+          <div className="relative h-full w-full rounded-full bg-slate-800 p-0.5">
+            <motion.div
+              className="h-1/4 w-full rounded-full bg-slate-200"
+              style={{ y: thumbY }}
+            />
+          </div>
         </div>
-      </div>
-
+      )}
       <AnimatePresence>
-        {navVariant !== "hidden" && <Navbar variant={navVariant} />}
+        {!isFullScreen && (
+          <motion.div
+            key="navbar-wrapper"
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 z-60" 
+          >
+            <Navbar />
+          </motion.div>
+        )}
       </AnimatePresence>
 
-      <motion.div
-        className="absolute top-0 h-16"
-        onViewportEnter={() => setNavVariant("hero")}
-      />
-
       <HeroAndSkillsContainer />
-
-      <motion.div
-        className="relative -top-16 h-16"
-        onViewportEnter={() => setNavVariant("hidden")}
-        onViewportLeave={() => setNavVariant("hero")}
-      />
 
       <div className="relative">
         <motion.div

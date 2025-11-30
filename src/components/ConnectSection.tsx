@@ -32,14 +32,19 @@ export function ConnectSection() {
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         <div className="relative w-full max-w-4xl h-[600px]">
           <motion.div
-            className="w-full h-full flex items-center justify-center"
+            className="w-full h-full flex flex-col items-center justify-center text-center"
             style={{ opacity: textOpacity, scale: textScale }}
           >
-            <h2 className="font-anton text-7xl md:text-9xl text-center text-[#4D2D9A] tracking-tighter">
+            <h2 className="font-anton text-7xl md:text-9xl text-[#4D2D9A] tracking-tighter">
               LETS CONNECT!
             </h2>
-          </motion.div>
 
+            <div className="h-10" />
+
+            <div className="text-sm uppercase tracking-widest text-slate-500">
+              Scroll <span className="text-2xl block mt-2">↓</span>
+            </div>
+          </motion.div>
           <ConnectCard
             title="GitHub"
             id="@dotbillu"

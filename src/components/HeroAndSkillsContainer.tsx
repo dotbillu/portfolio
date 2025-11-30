@@ -10,13 +10,19 @@ export function HeroAndSkillsContainer() {
     target: targetRef,
     offset: ["start start", "end start"],
   });
-
   return (
     <section
-      id="skills"
       ref={targetRef}
-      className="relative h-[800vh] bg-[#FFF1EB]"
+      className="relative h-[600vh] bg-[#FFF1EB]"
     >
+      <div
+        id="home"
+        className="absolute top-0 left-0 w-full h-1 pointer-events-none"
+      />
+      <div
+        id="skills"
+        className="absolute top-[300vh] left-0 w-full h-1 pointer-events-none"
+      />
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         <HeroContent scrollYProgress={scrollYProgress} />
         <SkillsContent scrollYProgress={scrollYProgress} />
