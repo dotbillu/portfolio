@@ -20,11 +20,11 @@ const cardsData: CardData[] = [
     logo: "/slymelogo.png",
     titleColor: "#F2898D",
     text: [
-      "Slyme is a hyperlocal social ecosystem designed to gamify community action and environmental impact. It leverages geolocation to connect users through a shared feed and interactive live map 'Rooms' for real-world collaboration.",
-      "Implements a real-time geospatial engine allowing users to visualize local activity, join dynamic rooms, and coordinate community events on an interactive map.",
-      "Features a 'Gig' marketplace and social feed, enabling users to monetize local tasks and coordinate environmental drives with 10+ active beta users.",
-      "Frontend: Built with Next.js and Tailwind for performance, utilizing Jotai for atomic state management and Framer Motion for fluid UX.",
-      "Backend: Scalable Node.js & Express architecture using Prisma (PostgreSQL) and WebSockets for low-latency live updates.",
+      "Hyperlocal social platform gamifying community action and environmental impact through geolocation-based 'Rooms' and shared feeds.",
+      "Real-time geospatial engine for visualizing local activity, joining dynamic rooms, and coordinating community events.",
+      "'Gig' marketplace and social feed for monetizing local tasks and coordinating environmental drives with 10+ beta users.",
+      "Frontend: Next.js, Tailwind, Jotai for state management, Framer Motion for smooth UX.",
+      "Backend: Node.js, Express, Prisma with PostgreSQL, WebSockets for real-time updates.",
     ],
     imgs: [
       "/slyme.png",
@@ -45,12 +45,12 @@ const cardsData: CardData[] = [
     id: "card-2",
     title: "Scrib-Draw",
     text: [
-      "Scrib-Draw is a real-time collaborative whiteboard designed for system design diagrams and rapid brainstorming. It offers a shared infinite canvas where teams can visualize architectures together.",
-      "Equipped with vector tools (shapes, arrows, freehand) specifically tuned for creating clean system architecture diagrams and flowcharts.",
-      "Features real-time synchronization via WebSockets, allowing multiple users to draw, edit, and brainstorm on the same canvas instantly.",
-      "Implements complex canvas interactions including object resizing, layer management, and undo/redo history using Konva.js.",
-      "Frontend: Next.js, React, Tailwind CSS, Konva.js (Canvas API)",
-      "Backend: Node.js, Express, Socket.io for bidirectional communication",
+      "Real-time collaborative whiteboard for system design diagrams and rapid brainstorming with shared infinite canvas.",
+      "Vector tools (shapes, arrows, freehand) optimized for clean architecture diagrams and flowcharts.",
+      "WebSocket-powered real-time synchronization for instant collaborative drawing and brainstorming.",
+      "Complex canvas interactions with object resizing, layer management, and undo/redo using Konva.js.",
+      "Frontend: Next.js, React, Tailwind, Konva.js for canvas manipulation.",
+      "Backend: Node.js, Express, Socket.io for real-time communication.",
     ],
     imgs: ["/scribdrw1.png", "/scribdrw2.png"],
     links: [
@@ -62,11 +62,11 @@ const cardsData: CardData[] = [
     id: "card-3",
     title: "Caelivisio",
     text: [
-      "Caelivisio is a real-time astronomical dashboard designed to monitor Near-Earth Objects (NEOs). It bridges the gap between raw scientific telemetry and public accessibility by visualizing celestial data.",
-      "Integrates directly with NASA's NeoWs (Near Earth Object Web Service) API to fetch, filter, and normalize daily data streams regarding asteroid velocity, diameter, and miss distance.",
-      "Features a dynamic classification system that automatically flags and highlights 'Potentially Hazardous Asteroids' (PHAs) based on NASA's collision probability algorithms.",
-      "Frontend: Next.js and React for a responsive interface, utilizing Tailwind CSS for a modern, dark-mode 'space' aesthetic.",
-      "Data Handling: Efficient data fetching patterns with Next.js API routes to handle external rate limits and caching.",
+      "Real-time astronomical dashboard monitoring Near-Earth Objects (NEOs) with accessible celestial data visualization.",
+      "Direct NASA NeoWs API integration for fetching, filtering, and normalizing asteroid velocity, diameter, and miss distance data.",
+      "Dynamic classification system flagging 'Potentially Hazardous Asteroids' using NASA's collision probability algorithms.",
+      "Frontend: Next.js, React, Tailwind with dark-mode space aesthetic.",
+      "Data handling: Efficient Next.js API routes with rate limiting and caching.",
     ],
     imgs: ["/caelivisio.png"],
     links: [
@@ -78,11 +78,11 @@ const cardsData: CardData[] = [
     id: "card-4",
     title: "KeyBlast",
     text: [
-      "KeyBlast is a high-performance CLI typing trainer built entirely in Bash/Zsh. It transforms the terminal into a minimal, distraction-free typing simulator designed for developers to warm up their fingers and improve coding speed.",
-      "Supports multiple training modes, including standard English vocabulary and syntax-specific drills for JavaScript and C++ to practice real-world coding patterns.",
-      "Features a reactive terminal UI with real-time WPM calculation, live accuracy tracking, and dynamic highlighting using raw ANSI escape codes.",
-      "Engineered with standard Unix utilities (`bc`, `tput`, `figlet`) for a zero-dependency*, bloat-free experience that runs instantly on any Linux environment.",
-      "Tech Stack: Pure Bash/Zsh Scripting, Unix Pipes, and Nerd Fonts.",
+      "High-performance CLI typing trainer in Bash/Zsh for developers to improve coding speed with distraction-free terminal interface.",
+      "Multiple training modes including standard vocabulary and language-specific drills for JavaScript and C++.",
+      "Reactive terminal UI with real-time WPM calculation, accuracy tracking, and ANSI escape code highlighting.",
+      "Zero-dependency design using Unix utilities (`bc`, `tput`, `figlet`) for instant Linux compatibility.",
+      "Tech: Pure Bash/Zsh scripting with Unix pipes and Nerd Fonts.",
     ],
     imgs: [
       "/keyblast1.png",
@@ -102,9 +102,10 @@ export function PortfolioDeck() {
     offset: ["start start", "end end"],
   });
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 60,
-    damping: 35,
-    mass: 0.5,
+    stiffness: 100,
+    damping: 30,
+    mass: 0.1,
+    restDelta: 0.001,
   });
   const headerRange = [0, 0.2];
 

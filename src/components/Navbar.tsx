@@ -1,13 +1,15 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import { useActiveSection } from "../hooks/useActiveSection";
 
 export function Navbar() {
+  const activeSection = useActiveSection();
   const navItems = [
-    { name: "HOME", href: "#home" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Connect", href: "#connect" },
+    { name: "HOME", href: "#home", id: "home" },
+    { name: "Skills", href: "#skills", id: "skills" },
+    { name: "Projects", href: "#projects", id: "projects" },
+    { name: "Connect", href: "#connect", id: "connect" },
   ];
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -33,17 +35,19 @@ export function Navbar() {
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pointer-events-auto overflow-hidden"
       >
         <div className="flex items-center justify-between h-16 whitespace-nowrap">
-          <NavItem 
-            item={navItems[0]} 
+          <NavItem
+            item={navItems[0]}
             handleScroll={handleScrollTo}
             isHome={true}
+            isActive={activeSection === navItems[0].id}
           />
           <div className="flex items-center space-x-6">
             {navItems.slice(1).map((item) => (
-              <NavItem 
-                key={item.name} 
-                item={item} 
+              <NavItem
+                key={item.name}
+                item={item}
                 handleScroll={handleScrollTo}
+                isActive={activeSection === item.id}
               />
             ))}
           </div>
@@ -53,7 +57,7 @@ export function Navbar() {
   );
 }
 
-function NavItem({ item, handleScroll, isHome }: any) {
+function NavItem({ item, handleScroll, isHome, isActive }: any) {
   return (
     <motion.a
       href={item.href}
@@ -66,12 +70,17 @@ function NavItem({ item, handleScroll, isHome }: any) {
     >
       <span className="relative z-10">{item.name}</span>
       <motion.span
+        animate={{ scaleX: isActive ? 1 : 0, originX: 0.5 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-black"
+      />
+      <motion.span
         variants={{
           initial: { scaleX: 0, originX: 0.5 },
-          hover: { scaleX: 1, originX: 0.5 }
+          hover: { scaleX: isActive ? 0 : 1, originX: 0.5 }
         }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-black opacity-80"
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-black opacity-60"
       />
     </motion.a>
   );

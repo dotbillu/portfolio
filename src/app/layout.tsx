@@ -1,5 +1,6 @@
 import "./globals.css";
 import { FullScreenProvider } from "../context/FullScreenContext";
+import { SmoothScrollProvider } from "../components/SmoothScrollProvider";
 
 export default function RootLayout({
   children,
@@ -9,7 +10,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="m-0 p-0 bg-[#FFF1EB]">
-        <FullScreenProvider>{children}</FullScreenProvider>
+        <FullScreenProvider>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </FullScreenProvider>
       </body>
     </html>
   );

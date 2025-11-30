@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, useTransform, MotionValue, AnimatePresence } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { Card3D } from "./Card3D";
+import { Card2D } from "./Card2D";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CardData } from "./PortfolioDeck";
 import { Lightbox } from "./Lightbox";
@@ -29,8 +28,7 @@ export const StackingCard = ({
   const [imgIndex, setImgIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  
+
   const { setFullScreen } = useFullScreen();
 
   const handleOpenLightbox = () => {
@@ -44,13 +42,6 @@ export const StackingCard = ({
   };
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile(); 
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
     const img = new Image();
     img.src = card.imgs[imgIndex];
     img.onload = () => {
@@ -60,7 +51,6 @@ export const StackingCard = ({
 
   const handleNext = (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    // setDirection(1); // Removed
     setImgIndex((prev) => (prev + 1) % card.imgs.length);
   };
 
@@ -72,7 +62,7 @@ export const StackingCard = ({
   const y = useTransform(scrollYProgress, (progress) => {
     const activeCardIndex = progress * (totalCards - 1);
     const distance = index - activeCardIndex;
-    const offset = isMobile ? 100 : 45; 
+    const offset = 45;
     return `${distance * offset}%`;
   });
 
@@ -91,7 +81,7 @@ export const StackingCard = ({
   return (
     <>
       <motion.div
-        className="absolute w-full h-full flex items-center justify-center p-4 md:p-8"
+        className="absolute w-full h-full flex items-center justify-center p-4 md:p-8 will-change-transform"
         style={{ zIndex, y, scale }}
       >
         <div className="w-full max-w-lg md:max-w-3xl lg:max-w-5xl bg-white rounded-3xl shadow-2xl shadow-slate-900/10 ring-1 ring-gray-900/5 overflow-hidden">
@@ -156,29 +146,21 @@ export const StackingCard = ({
               )}
             </div>
 
-            <div className="flex items-center justify-center w-full h-full relative">
-              <div className="w-full h-full relative group"> 
-                
+            <div className="hidden md:flex mt-25 items-center justify-center w-full h-full relative">
+              <div className="w-full h-full relative group">
+
                 {card.imgs.length > 1 && (
                   <>
                     <button
                       onClick={handlePrev}
-                      className={`absolute top-1/2 -translate-y-1/2 z-20 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100 ${
-                        isPortrait 
-                          ? "left-[calc(50%-180px)]" 
-                          : "left-2" 
-                      }`}
+                      className="absolute top-[45%] -translate-y-1/2 z-20 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100 left-2"
                     >
                       <FaChevronLeft size={14} />
                     </button>
 
                     <button
                       onClick={handleNext}
-                      className={`absolute top-1/2 -translate-y-1/2 z-20 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100 ${
-                        isPortrait 
-                          ? "right-[calc(50%-180px)]" 
-                          : "right-2" 
-                      }`}
+                      className="absolute top-[45%] -translate-y-1/2 z-20 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100 right-2"
                     >
                       <FaChevronRight size={14} />
                     </button>
@@ -213,25 +195,10 @@ export const StackingCard = ({
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="absolute inset-0 w-full h-full"
                     >
-                      <Canvas
-                        frameloop="demand"
-                        camera={{ position: [0, 0, 6], fov: 45 }}
-                        dpr={[1, 2]}
-                        gl={{
-                          alpha: true,
-                          antialias: true,
-                          preserveDrawingBuffer: true,
-                        }}
-                        className="w-full h-full"
-                      >
-                        <ambientLight intensity={1.5} />
-                        <directionalLight position={[0, 2, 5]} intensity={2.0} />
-
-                        <Card3D
-                          imageUrl={card.imgs[imgIndex]}
-                          onClick={handleOpenLightbox}
-                        />
-                      </Canvas>
+                      <Card2D
+                        imageUrl={card.imgs[imgIndex]}
+                        onClick={handleOpenLightbox}
+                      />
                     </motion.div>
                   </AnimatePresence>
                 </div>
