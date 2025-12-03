@@ -37,7 +37,7 @@ const cardsData: CardData[] = [
       "/slyme6.png",
     ],
     links: [
-      { href: "https://slyme-eosin.vercel.app/", label: "Live Demo" },
+      { href: "https://slyme-dotillu.vercel.app/", label: "Live Demo" },
       { href: "https://github.com/dotbillu/slyme", label: "GitHub" },
     ],
   },
