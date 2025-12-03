@@ -25,7 +25,7 @@ export function Navbar() {
        let y = element.getBoundingClientRect().top + window.scrollY;
 
        if (isMobile && targetId === "skills") {
-         y = window.innerHeight * 0.8;
+         y = window.innerHeight * 1.1;
        }
 
        if (isMobile && targetId === "connect") {
