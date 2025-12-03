@@ -37,29 +37,29 @@ export function ConnectSection() {
   const mobileTitleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const mobileTitleScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
 
-  const githubScale = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
-  const githubOpacity = useTransform(scrollYProgress, [0.2, 0.4], [0, 1]);
-  const githubY = useTransform(scrollYProgress, [0.2, 0.5], [50, 0]);
+  const githubScale = useTransform(scrollYProgress, [0.15, 0.35], [0, 1]);
+  const githubOpacity = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
+  const githubY = useTransform(scrollYProgress, [0.15, 0.35], [50, 0]);
 
-  const linkedinScale = useTransform(scrollYProgress, [0.45, 0.7], [0, 1]);
-  const linkedinOpacity = useTransform(scrollYProgress, [0.45, 0.6], [0, 1]);
-  const linkedinY = useTransform(scrollYProgress, [0.45, 0.7], [50, 0]);
+  const linkedinScale = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
+  const linkedinOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
+  const linkedinY = useTransform(scrollYProgress, [0.3, 0.5], [50, 0]);
 
-  const leetcodeScale = useTransform(scrollYProgress, [0.65, 0.9], [0, 1]);
-  const leetcodeOpacity = useTransform(scrollYProgress, [0.65, 0.8], [0, 1]);
-  const leetcodeY = useTransform(scrollYProgress, [0.65, 0.9], [50, 0]);
+  const leetcodeScale = useTransform(scrollYProgress, [0.45, 0.65], [0, 1]);
+  const leetcodeOpacity = useTransform(scrollYProgress, [0.45, 0.55], [0, 1]);
+  const leetcodeY = useTransform(scrollYProgress, [0.45, 0.65], [50, 0]);
 
-  const codeforcesScale = useTransform(scrollYProgress, [0.8, 1.0], [0, 1]);
-  const codeforcesOpacity = useTransform(scrollYProgress, [0.8, 0.95], [0, 1]);
-  const codeforcesY = useTransform(scrollYProgress, [0.8, 1.0], [50, 0]);
+  const codeforcesScale = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
+  const codeforcesOpacity = useTransform(scrollYProgress, [0.6, 0.7], [0, 1]);
+  const codeforcesY = useTransform(scrollYProgress, [0.6, 0.8], [50, 0]);
 
-  const scrollDownOpacity = useTransform(scrollYProgress, [0.8, 0.9], [1, 0]);
+  const scrollDownOpacity = useTransform(scrollYProgress, [0.7, 0.8], [1, 0]);
 
   return (
     <section
       ref={targetRef}
       id="connect"
-      className="relative h-[180vh] bg-[#FFF1EB]"
+      className="relative h-[140vh] bg-[#FFF1EB]"
     >
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         {!isMounted ? (
@@ -75,12 +75,11 @@ export function ConnectSection() {
             </div>
           </div>
         ) : isMobile ? (
-          <div className="w-full max-w-sm px-4">
+          <div className="w-full max-w-sm px-4 pt-20">
             <div className="w-full text-center mb-2">
               <h2 className="font-anton text-5xl text-[#4D2D9A] tracking-tighter">
                 LETS CONNECT!
               </h2>
-              <div className="h-6" />
               <motion.div
                 className="text-sm uppercase tracking-widest text-slate-500"
                 style={{
