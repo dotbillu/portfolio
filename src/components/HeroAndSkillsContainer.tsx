@@ -13,7 +13,7 @@ export function HeroAndSkillsContainer() {
   return (
     <section
       ref={targetRef}
-      className="relative h-[600vh] bg-[#FFF1EB]"
+      className="relative h-[400vh] bg-[#FFF1EB]"
     >
       <div
         id="home"
