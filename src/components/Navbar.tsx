@@ -48,7 +48,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <div className={`${isMobile ? 'fixed top-0 left-0 right-0 z-50 bg-[#FFF1EB]/95 backdrop-blur-sm border-b border-gray-200' : 'fixed top-1 left-0 right-0 z-50'}`}>
+    <div className={`${isMobile ? 'fixed top-0 left-0 right-0 z-50 bg-[#FFF1EB]/95 backdrop-blur-sm ' : 'fixed top-1 left-0 right-0 z-50'}`}>
       <motion.div
         initial={{ width: 0, opacity: 0 }}
         animate={{ width: "100%", opacity: 1 }}
