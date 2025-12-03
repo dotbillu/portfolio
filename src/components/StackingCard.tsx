@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, useTransform, MotionValue, AnimatePresence } from "framer-motion";
 import { Card2D } from "./Card2D";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -13,10 +13,11 @@ interface StackingCardProps {
   totalCards: number;
   scrollYProgress: MotionValue<number>;
 }
+
 const crossfadeVariants = {
-  initial: { opacity: 1 },
-  animate: { opacity: 1},
-  exit: { opacity: 1, zIndex: 1 },
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.95 }, 
 };
 
 export const StackingCard = ({
@@ -27,8 +28,6 @@ export const StackingCard = ({
 }: StackingCardProps) => {
   const [imgIndex, setImgIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isPortrait, setIsPortrait] = useState(false);
-
   const { setFullScreen } = useFullScreen();
 
   const handleOpenLightbox = () => {
@@ -40,14 +39,6 @@ export const StackingCard = ({
     setIsLightboxOpen(false);
     setFullScreen(false);
   };
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = card.imgs[imgIndex];
-    img.onload = () => {
-      setIsPortrait(img.height > img.width);
-    };
-  }, [imgIndex, card.imgs]);
 
   const handleNext = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -75,7 +66,7 @@ export const StackingCard = ({
   const zIndex = useTransform(scrollYProgress, (progress) => {
     const activeCardIndex = progress * (totalCards - 1);
     const distance = Math.abs(index - activeCardIndex);
-    return (totalCards - distance) + 20; 
+    return totalCards - distance + 20;
   });
 
   return (
@@ -86,6 +77,7 @@ export const StackingCard = ({
       >
         <div className="w-full max-w-lg md:max-w-3xl lg:max-w-5xl bg-white rounded-3xl shadow-2xl shadow-slate-900/10 ring-1 ring-gray-900/5 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-6 md:px-12 md:py-8 h-full">
+            {/* Left Column: Text */}
             <div className="flex flex-col justify-center items-start text-left">
               <div className="flex items-center gap-1 mb-6">
                 {card.logo && (
@@ -146,45 +138,15 @@ export const StackingCard = ({
               )}
             </div>
 
-            <div className="hidden md:flex mt-25 items-center justify-center w-full h-full relative">
-              <div className="w-full h-full relative group">
-
-                {card.imgs.length > 1 && (
-                  <>
-                    <button
-                      onClick={handlePrev}
-                      className="absolute top-[45%] -translate-y-1/2 z-20 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100 left-2"
-                    >
-                      <FaChevronLeft size={14} />
-                    </button>
-
-                    <button
-                      onClick={handleNext}
-                      className="absolute top-[45%] -translate-y-1/2 z-20 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100 right-2"
-                    >
-                      <FaChevronRight size={14} />
-                    </button>
-
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                      {card.imgs.map((_, idx) => (
-                        <button
-                          key={idx}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setImgIndex(idx);
-                          }}
-                          className={`w-1.5 h-1.5 rounded-full transition-all shadow-sm ${
-                            idx === imgIndex
-                              ? "bg-slate-900 scale-125"
-                              : "bg-slate-300 hover:bg-slate-400"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-
-                <div className="w-full h-full relative overflow-visible">
+            {/* Right Column: Image */}
+            <div className="hidden md:flex flex-col items-center justify-start pt-10 w-full h-full relative">
+              <div className="w-full relative group flex flex-col items-center">
+                
+                {/* FIX: Added min-h-[300px]. 
+                  This forces the container to stay open even when the image unmounts 
+                  during the animation, preventing the arrows from jumping.
+                */}
+                <div className="w-full relative overflow-visible flex justify-center min-h-[300px]">
                   <AnimatePresence initial={false} mode="wait">
                     <motion.div
                       key={imgIndex}
@@ -192,8 +154,8 @@ export const StackingCard = ({
                       initial="initial"
                       animate="animate"
                       exit="exit"
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="absolute inset-0 w-full h-full"
+                      transition={{ duration: 0.2, ease: "easeOut" }} // Faster transition feels snappier
+                      className="w-full flex justify-center"
                     >
                       <Card2D
                         imageUrl={card.imgs[imgIndex]}
@@ -201,7 +163,48 @@ export const StackingCard = ({
                       />
                     </motion.div>
                   </AnimatePresence>
+
+                  {/* Navigation Arrows */}
+                  {card.imgs.length > 1 && (
+                    <>
+                      <button
+                        onClick={handlePrev}
+                        // Added z-30 to ensure arrows stay on top of the animation
+                        className="absolute top-1/2 -translate-y-1/2 -left-4 z-30 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100"
+                      >
+                        <FaChevronLeft size={14} />
+                      </button>
+
+                      <button
+                        onClick={handleNext}
+                        // Added z-30
+                        className="absolute top-1/2 -translate-y-1/2 -right-4 z-30 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-slate-800 hover:bg-white transition-all scale-75 hover:scale-100"
+                      >
+                        <FaChevronRight size={14} />
+                      </button>
+                    </>
+                  )}
                 </div>
+
+                {/* Dots Indicator */}
+                {card.imgs.length > 1 && (
+                  <div className="flex gap-2 mt-4 z-20">
+                    {card.imgs.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setImgIndex(idx);
+                        }}
+                        className={`w-1.5 h-1.5 rounded-full transition-all shadow-sm ${
+                          idx === imgIndex
+                            ? "bg-slate-900 scale-125"
+                            : "bg-slate-300 hover:bg-slate-400"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
