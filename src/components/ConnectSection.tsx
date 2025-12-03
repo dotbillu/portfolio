@@ -114,7 +114,7 @@ export function ConnectSection() {
                   icon={<SiGithub size={32} />}
                   iconColor="text-gray-800"
                   motionStyle={{}}
-                  benchmark={["400+", "contributions"]}
+                  benchmark={["400+", "Contributions"]}
                 />
               </motion.div>
 
@@ -165,7 +165,7 @@ export function ConnectSection() {
                   icon={<SiLeetcode size={32} />}
                   iconColor="text-[#F89F1B]"
                   motionStyle={{}}
-                  benchmark={["250+", "questions"]}
+                  benchmark={["250+", "Questions"]}
                 />
               </motion.div>
 
@@ -191,7 +191,7 @@ export function ConnectSection() {
                   icon={<SiCodeforces size={32} />}
                   iconColor="text-red-600"
                   motionStyle={{}}
-                  benchmark={["expert", "1600+"]}
+                  benchmark={["Expert", "1600+"]}
                 />
               </motion.div>
             </div>
@@ -216,7 +216,7 @@ export function ConnectSection() {
               title="GitHub"
               id="@dotbillu"
               link="https://github.com/dotbillu"
-              className="top-[58px] right-[55%] w-80 h-48 bg-gray-50"
+              className="top-[58px] right-[50%] w-96 h-48 bg-gray-50"
               textColor="text-gray-900"
               subTextColor="text-gray-600"
               icon={<SiGithub size={100} />}
@@ -233,7 +233,7 @@ export function ConnectSection() {
               title="LinkedIn"
               id="Abhay Jha"
               link="https://www.linkedin.com/in/abhay-jha-1874a5223/"
-              className="top-[26px] left-[55%] w-80 h-56 bg-blue-50"
+              className="top-[26px] left-[50%] w-96 h-56 bg-blue-50"
               textColor="text-gray-900"
               subTextColor="text-gray-600"
               icon={<SiLinkedin size={100} />}
@@ -249,7 +249,7 @@ export function ConnectSection() {
               title="LeetCode"
               id="@notbillu"
               link="https://leetcode.com/notbillu"
-              className="bottom-[26px] right-[55%] w-80 h-56 bg-orange-50"
+              className="bottom-[26px] right-[50%] w-96 h-56 bg-orange-50"
               textColor="text-gray-900"
               subTextColor="text-gray-600"
               icon={<SiLeetcode size={100} />}
@@ -260,13 +260,13 @@ export function ConnectSection() {
                 opacity: cardOpacity,
                 scale: cardScale,
               }}
-              benchmark={["250+", "questions"]}
+              benchmark={["250+", "Questions"]}
             />
             <ConnectCard
               title="Codeforces"
               id="@notbillu"
               link="https://codeforces.com/profile/notbillu"
-              className="bottom-[58px] left-[55%] w-80 h-48 bg-red-50"
+              className="bottom-[58px] left-[50%] w-96 h-48 bg-red-50"
               textColor="text-gray-900"
               subTextColor="text-gray-600"
               icon={<SiCodeforces size={100} />}
@@ -277,7 +277,7 @@ export function ConnectSection() {
                 opacity: cardOpacity,
                 scale: cardScale,
               }}
-              benchmark={["expert", "1600+"]}
+              benchmark={["Expert", "1600+"]}
             />
           </div>
         )}

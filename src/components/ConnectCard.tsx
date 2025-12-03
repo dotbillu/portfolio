@@ -40,18 +40,26 @@ export const ConnectCard = ({
       <div className="flex flex-col flex-1">
         <h3 className={`text-lg md:text-2xl font-bold ${textColor}`}>{title}</h3>
         <p className={`mt-1 text-sm md:text-lg ${subTextColor}`}>{id}</p>
+        {!isMobile && benchmark && (
+          <div className="flex flex-wrap justify-start gap-2 mt-3 pt-3 border-t border-gray-200">
+            {benchmark.map((line, index) => (
+              <span key={index} className="text-sm font-medium text-gray-800 opacity-75">
+                {line}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
       {isMobile && benchmark && (
         <div className="flex flex-col items-end mr-3">
           {benchmark.map((line, index) => (
-            <span key={index} className={`text-xs font-medium ${textColor} opacity-75 text-right leading-tight block`}>
+            <span key={index} className="text-xs font-medium text-gray-800 opacity-75 text-right leading-tight block">
               {line}
             </span>
           ))}
         </div>
       )}
-      <div className="flex items-center gap-2">
-        <div className="w-px h-8 bg-gray-400"></div>
+      <div className="flex items-center">
         <div className={iconColor || "text-current"}>
           {icon}
         </div>
