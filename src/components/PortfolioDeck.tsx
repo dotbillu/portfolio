@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { StackingCard } from "./StackingCard";
 
@@ -9,6 +9,7 @@ export interface CardData {
   titleColor?: string;
   logo?: string;
   text: string | string[];
+  textMobile?: string | string[];
   imgs: string[];
   links?: Array<{ href: string; label: string }>;
 }
@@ -25,6 +26,13 @@ const cardsData: CardData[] = [
       "'Gig' marketplace and social feed for monetizing local tasks and coordinating environmental drives with 10+ beta users.",
       "Frontend: Next.js, Tailwind, Jotai for state management, Framer Motion for smooth UX.",
       "Backend: Node.js, Express, Prisma with PostgreSQL, WebSockets for real-time updates.",
+    ],
+    textMobile: [
+      "Hyperlocal social platform with gamified community action via geolocation 'Rooms'.",
+      "Real-time geospatial engine for local activity and room coordination.",
+      "'Gig' marketplace for local tasks with 10+ beta users.",
+      "Frontend: Next.js, Tailwind, Jotai, Framer Motion.",
+      "Backend: Node.js, Express, Prisma, PostgreSQL, WebSockets.",
     ],
     imgs: [
       "/slyme.png",
@@ -52,6 +60,14 @@ const cardsData: CardData[] = [
       "Frontend: Next.js, React, Tailwind, Konva.js for canvas manipulation.",
       "Backend: Node.js, Express, Socket.io for real-time communication.",
     ],
+    textMobile: [
+      "Real-time collaborative whiteboard for system design and brainstorming.",
+      "Vector tools for clean architecture diagrams and flowcharts.",
+      "WebSocket-powered real-time synchronization.",
+      "Advanced canvas interactions with Konva.js.",
+      "Frontend: Next.js, React, Tailwind, Konva.js.",
+      "Backend: Node.js, Express, Socket.io.",
+    ],
     imgs: ["/scribdrw1.png", "/scribdrw2.png"],
     links: [
       { href: "https://scrib-draw-web.vercel.app/", label: "Live Demo" },
@@ -67,6 +83,13 @@ const cardsData: CardData[] = [
       "Dynamic classification system flagging 'Potentially Hazardous Asteroids' using NASA's collision probability algorithms.",
       "Frontend: Next.js, React, Tailwind with dark-mode space aesthetic.",
       "Data handling: Efficient Next.js API routes with rate limiting and caching.",
+    ],
+    textMobile: [
+      "Real-time astronomical dashboard for NEO monitoring.",
+      "NASA NeoWs API integration for asteroid data.",
+      "Hazardous asteroid classification system.",
+      "Frontend: Next.js, React, Tailwind with space theme.",
+      "Efficient API routes with rate limiting and caching.",
     ],
     imgs: ["/caelivisio.png"],
     links: [
@@ -84,6 +107,13 @@ const cardsData: CardData[] = [
       "Zero-dependency design using Unix utilities (`bc`, `tput`, `figlet`) for instant Linux compatibility.",
       "Tech: Pure Bash/Zsh scripting with Unix pipes and Nerd Fonts.",
     ],
+    textMobile: [
+      "High-performance CLI typing trainer in Bash/Zsh.",
+      "Multiple training modes for vocabulary and coding languages.",
+      "Reactive terminal UI with real-time WPM tracking.",
+      "Zero-dependency design using Unix utilities.",
+      "Tech: Pure Bash/Zsh scripting with Unix tools.",
+    ],
     imgs: [
       "/keyblast1.png",
       "/keyblast2.png",
@@ -97,14 +127,23 @@ const cardsData: CardData[] = [
 export function PortfolioDeck() {
   const containerRef = useRef(null);
   const totalCards = cardsData.length;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    mass: 0.1,
+    stiffness: 60,
+    damping: 25,
+    mass: 0.3,
     restDelta: 0.001,
   });
   const headerRange = [0, 0.2];
@@ -112,7 +151,8 @@ export function PortfolioDeck() {
   const cardsAppearRange = [0.25, 0.45];
   const cardStackRange = [0.45, 0.9];
   const cardsExitRange = [0.9, 1];
-  const textScale = useTransform(smoothProgress, headerRange, [1, 0]);
+  const textScale = useTransform(smoothProgress, headerRange, [1, 0.8]);
+  const textOpacity = useTransform(smoothProgress, headerRange, [1, 0]);
   const headerPointerEvents = useTransform(smoothProgress, (val) =>
     val > 0.2 ? "none" : "auto",
   );
@@ -133,7 +173,7 @@ export function PortfolioDeck() {
       <main
         ref={containerRef}
         className="relative"
-        style={{ height: `${totalCards * 100}vh` }}
+        style={{ height: `${totalCards * (isMobile ? 60 : 100)}vh` }}
       >
         <div className="sticky top-0 h-screen overflow-hidden">
           <motion.div
@@ -150,6 +190,7 @@ export function PortfolioDeck() {
                 index={idx}
                 totalCards={totalCards}
                 scrollYProgress={cardStackProgress}
+                isMobile={isMobile}
               />
             ))}
           </motion.div>
@@ -161,7 +202,7 @@ export function PortfolioDeck() {
             className="absolute inset-0 flex flex-col items-center justify-center text-center bg-[#FFF1EB] z-10 px-4"
           >
             <motion.div
-              style={{ scale: textScale }}
+              style={{ scale: textScale, opacity: textOpacity }}
               className="w-full max-w-4xl"
             >
               <h1 className="text-6xl md:text-7xl font-extrabold mb-4 tracking-tight leading-tight text-[#131212]">

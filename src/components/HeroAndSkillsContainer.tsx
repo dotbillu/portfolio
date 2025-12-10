@@ -25,7 +25,7 @@ export function HeroAndSkillsContainer() {
       <div id="skills" className="absolute top-[300vh] left-0 w-full h-1 pointer-events-none" />
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         <HeroContent scrollYProgress={scrollYProgress} />
-        {isMobile && <div className="mt-100"></div>}
+        {isMobile && <div className="mt-8"></div>}
         <SkillsContent scrollYProgress={scrollYProgress} />
       </div>
     </section>

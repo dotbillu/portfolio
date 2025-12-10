@@ -12,12 +12,13 @@ interface StackingCardProps {
   index: number;
   totalCards: number;
   scrollYProgress: MotionValue<number>;
+  isMobile: boolean;
 }
 
 const crossfadeVariants = {
-  initial: { opacity: 0, scale: 0.95 },
-  animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.95 }, 
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 export const StackingCard = ({
@@ -25,6 +26,7 @@ export const StackingCard = ({
   index,
   totalCards,
   scrollYProgress,
+  isMobile,
 }: StackingCardProps) => {
   const [imgIndex, setImgIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -60,7 +62,8 @@ export const StackingCard = ({
   const scale = useTransform(scrollYProgress, (progress) => {
     const activeCardIndex = progress * (totalCards - 1);
     const distance = Math.abs(index - activeCardIndex);
-    return Math.max(1 - distance * 0.1, 0.5);
+    // Reduce scale variation for better mobile performance
+    return Math.max(1 - distance * 0.05, 0.85);
   });
 
   const zIndex = useTransform(scrollYProgress, (progress) => {
@@ -72,7 +75,7 @@ export const StackingCard = ({
   return (
     <>
       <motion.div
-        className="absolute w-full h-full flex items-center justify-center p-4 md:p-8 will-change-transform"
+        className="absolute w-full h-full flex items-center justify-center p-4 md:p-8 will-change-transform will-change-z-index"
         style={{ zIndex, y, scale }}
       >
         <div className="w-full max-w-lg md:max-w-3xl lg:max-w-5xl bg-white rounded-3xl shadow-2xl shadow-slate-900/10 ring-1 ring-gray-900/5 overflow-hidden">
@@ -96,29 +99,32 @@ export const StackingCard = ({
               </div>
 
               <div className="w-full">
-                {Array.isArray(card.text) ? (
-                  <>
-                    <p className="text-lg text-slate-700 font-light leading-relaxed mb-4">
-                      {card.text[0]}
+                {(() => {
+                  const displayText = isMobile && card.textMobile ? card.textMobile : card.text;
+                  return Array.isArray(displayText) ? (
+                    <>
+                      <p className="text-lg text-slate-700 font-light leading-relaxed mb-4">
+                        {displayText[0]}
+                      </p>
+                      {displayText.length > 1 && (
+                        <ul className="space-y-3">
+                          {displayText.slice(1).map((point, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <div className="mt-[9px] min-w-1.5 h-1.5 rounded-full bg-slate-800 shadow-sm" />
+                              <span className="text-base text-zinc-600 font-medium leading-relaxed">
+                                {point}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-lg text-slate-700 font-light leading-relaxed">
+                      {displayText}
                     </p>
-                    {card.text.length > 1 && (
-                      <ul className="space-y-3">
-                        {card.text.slice(1).map((point, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className="mt-[9px] min-w-1.5 h-1.5 rounded-full bg-slate-800 shadow-sm" />
-                            <span className="text-base text-zinc-600 font-medium leading-relaxed">
-                              {point}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                ) : (
-                  <p className="text-lg text-slate-700 font-light leading-relaxed">
-                    {card.text}
-                  </p>
-                )}
+                  );
+                })()}
               </div>
 
               {card.links && (
@@ -146,7 +152,7 @@ export const StackingCard = ({
                   This forces the container to stay open even when the image unmounts 
                   during the animation, preventing the arrows from jumping.
                 */}
-                <div className="w-full relative overflow-visible flex justify-center min-h-[300px]">
+                <div className="w-full relative overflow-visible flex justify-center min-h-[400px] items-center">
                   <AnimatePresence initial={false} mode="wait">
                     <motion.div
                       key={imgIndex}
@@ -154,7 +160,7 @@ export const StackingCard = ({
                       initial="initial"
                       animate="animate"
                       exit="exit"
-                      transition={{ duration: 0.2, ease: "easeOut" }} // Faster transition feels snappier
+                      transition={{ duration: 0.4, ease: "easeOut" }} // Smoother transition for better performance
                       className="w-full flex justify-center"
                     >
                       <Card2D
