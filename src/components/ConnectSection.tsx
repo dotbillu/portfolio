@@ -248,7 +248,7 @@ export function ConnectSection() {
               >
                 {isMobile ? (
                   <a
-                    href="https://notillu.hashnode.dev/"
+                    href="https://notbillu.hashnode.dev/"
                     className="w-full h-16 bg-purple-50 rounded-2xl border border-white shadow-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
                   >
                     <SiHashnode size={28} className="text-purple-600" />
@@ -256,8 +256,8 @@ export function ConnectSection() {
                 ) : (
                   <ConnectCard
                     title="Hashnode"
-                    id="@notillu"
-                    link="https://notillu.hashnode.dev/"
+                    id="@notbillu"
+                    link="https://notbillu.hashnode.dev/"
                     className="w-full h-20 bg-purple-50 rounded-2xl border border-white"
                     textColor="text-gray-900"
                     subTextColor="text-gray-600"
@@ -283,7 +283,7 @@ export function ConnectSection() {
               >
                 {isMobile ? (
                   <a
-                    href="https://twitter.com/notillu"
+                    href="https://twitter.com/notbillu"
                     className="w-full h-16 bg-sky-50 rounded-2xl border border-white shadow-lg flex items-center justify-center hover:bg-sky-100 transition-colors"
                   >
                     <FaTwitter size={28} className="text-sky-500" />
@@ -291,8 +291,8 @@ export function ConnectSection() {
                 ) : (
                   <ConnectCard
                     title="Twitter"
-                    id="@notillu"
-                    link="https://twitter.com/notillu"
+                    id="@notbillu"
+                    link="https://twitter.com/notbillu"
                     className="w-full h-20 bg-sky-50 rounded-2xl"
                     textColor="text-gray-900"
                     subTextColor="text-gray-600"
