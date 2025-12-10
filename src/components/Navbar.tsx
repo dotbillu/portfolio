@@ -16,23 +16,24 @@ export function Navbar() {
     e.preventDefault();
 
     const targetId = href.replace("#", "");
-    const element = document.getElementById(targetId);
 
     if (targetId === "home") {
        window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (element) {
-       const isMobile = window.innerWidth < 768;
-       let y = element.getBoundingClientRect().top + window.scrollY;
+    } else if (targetId === "connect") {
+       // Scroll to the very bottom of the page
+       window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+    } else {
+       const element = document.getElementById(targetId);
+       if (element) {
+         const isMobile = window.innerWidth < 768;
+         let y = element.getBoundingClientRect().top + window.scrollY;
 
-       if (isMobile && targetId === "skills") {
-         y = window.innerHeight * 1.1;
+         if (isMobile && targetId === "skills") {
+           y = window.innerHeight * 1.1;
+         }
+
+         window.scrollTo({ top: y, behavior: "smooth" });
        }
-
-       if (isMobile && targetId === "connect") {
-         y = window.innerHeight * 12;
-       }
-
-       window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
