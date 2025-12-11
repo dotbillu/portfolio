@@ -10,6 +10,7 @@ import { Navbar } from "../components/Navbar";
 import { HeroAndSkillsContainer } from "../components/HeroAndSkillsContainer";
 import { PortfolioDeck } from "../components/PortfolioDeck";
 import { ConnectSection } from "../components/ConnectSection";
+import { Chatbot } from "../components/Chatbot";
 import { useFullScreen } from "../context/FullScreenContext";
 
 export default function Home() {
@@ -72,6 +73,8 @@ export default function Home() {
       <div ref={connectSectionRef}>
         <ConnectSection />
       </div>
+
+      <Chatbot isFullScreen={isFullScreen} />
     </>
   );
 }

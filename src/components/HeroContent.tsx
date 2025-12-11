@@ -22,7 +22,7 @@ export const HeroContent = ({ scrollYProgress }: HeroContentProps) => {
         <p>WELCOME !</p>
       </h1>
       <p className="mt-6 text-lg md:text-xl text-gray-700 max-w-2xl px-4 md:px-0">
-        I’m Abhay, a software engineer trying to be part of the ideas and
+        I'm Abhay, a software engineer trying to be part of the ideas and
         projects that actually matter, learning and building along the way.
       </p>
 

@@ -1,16 +1,33 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useAtom } from "jotai";
+import { Sun } from "lucide-react";
 import { useActiveSection } from "../hooks/useActiveSection";
+import { chatbotOpenAtom, chatbotMessageAtom } from "../atoms/chatbotAtom";
 
 export function Navbar() {
   const activeSection = useActiveSection();
+  const [, setChatbotOpen] = useAtom(chatbotOpenAtom);
+  const [, setChatbotMessage] = useAtom(chatbotMessageAtom);
   const navItems = [
     { name: "HOME", href: "#home", id: "home" },
     { name: "Skills", href: "#skills", id: "skills" },
     { name: "Projects", href: "#projects", id: "projects" },
     { name: "Connect", href: "#connect", id: "connect" },
   ];
+
+  const handleSunClick = () => {
+    const funMessages = [
+      "C'mon, the color palette is already nice! 😊",
+      "Why change perfection? The current colors are beautiful! ✨",
+      "Nah, let's keep these gorgeous colors! They're already perfect! 🎨",
+      "The color scheme is fire already! No need to switch! 🔥"
+    ];
+    const randomMessage = funMessages[Math.floor(Math.random() * funMessages.length)];
+    setChatbotMessage(randomMessage);
+    setChatbotOpen(true);
+  };
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -72,6 +89,15 @@ export function Navbar() {
                 isActive={activeSection === item.id}
               />
             ))}
+            <motion.button
+              onClick={handleSunClick}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Sun icon"
+            >
+              <Sun size={18} className="text-gray-700" />
+            </motion.button>
           </div>
         </div>
       </motion.div>
@@ -107,3 +133,4 @@ function NavItem({ item, handleScroll, isHome, isActive }: any) {
     </motion.a>
   );
 }
+
