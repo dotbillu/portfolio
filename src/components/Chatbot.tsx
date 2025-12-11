@@ -102,6 +102,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ isFullScreen = false }) => {
   const handleContactTooltipClick = () => {
     setIsOpen(true);
     setShowContactTooltip(false);
+    setIsCollectingEmail(true);
     const emailMessage = "Email is abhaayjha@gmail.com, but you can just mention your email here and I will attend to you ASAP.";
     setTriggerMessage(emailMessage);
   };
@@ -404,9 +405,23 @@ export const Chatbot: React.FC<ChatbotProps> = ({ isFullScreen = false }) => {
 
   return (
     <>
-      <AnimatePresence>
-        {showWelcomeTooltip && !isOpen && (
+      <AnimatePresence mode="wait">
+        {!isOpen && (showContactTooltip ? (
           <motion.div
+            key="contact-tooltip"
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-20 right-6 z-50 bg-[#4D2D9A] text-white px-4 py-3 rounded-lg shadow-lg max-w-xs cursor-pointer hover:bg-[#3D1F8A] transition-colors"
+            onClick={handleContactTooltipClick}
+          >
+            <div className="text-sm font-medium">Looking for email? Click here</div>
+            <div className="absolute bottom-[-8px] right-6 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-[#4D2D9A]"></div>
+          </motion.div>
+        ) : showWelcomeTooltip && (
+          <motion.div
+            key="welcome-tooltip"
             initial={{ opacity: 0, y: 10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.8 }}
@@ -418,28 +433,14 @@ export const Chatbot: React.FC<ChatbotProps> = ({ isFullScreen = false }) => {
             <div className="text-xs opacity-90 mt-1">Ask about me or contact me! ↓</div>
             <div className="absolute bottom-[-8px] right-6 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-[#4D2D9A]"></div>
           </motion.div>
-        )}
-
-        {showContactTooltip && !isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-20 right-6 z-50 bg-[#4D2D9A] text-white px-4 py-3 rounded-lg shadow-lg max-w-xs cursor-pointer hover:bg-[#3D1F8A] transition-colors"
-            onClick={handleContactTooltipClick}
-          >
-            <div className="text-sm font-medium">Looking for email? Click here</div>
-            <div className="absolute bottom-[-8px] right-6 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-[#4D2D9A]"></div>
-          </motion.div>
-        )}
+        ))}
       </AnimatePresence>
 
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 bg-[#4D2D9A] hover:bg-[#3D1F8A] text-white p-4 rounded-full shadow-lg transition-colors"
+        className="fixed bottom-2 right-2 z-50 bg-[#4D2D9A] hover:bg-[#3D1F8A] text-white p-4 rounded-full shadow-lg transition-colors"
       >
         <MessageCircle size={24} />
       </motion.button>
