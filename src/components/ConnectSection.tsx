@@ -257,7 +257,7 @@ export function ConnectSection() {
                   <ConnectCard
                     title="Hashnode"
                     id="@notbillu"
-                    link="https://notbillu.hashnode.dev/"
+                    link="https://hashnode.com/@notbillu"
                     className="w-full h-20 bg-purple-50 rounded-2xl border border-white"
                     textColor="text-gray-900"
                     subTextColor="text-gray-600"
