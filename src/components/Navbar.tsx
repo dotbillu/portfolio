@@ -2,15 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { Sun } from "lucide-react";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { chatbotOpenAtom, chatbotMessageAtom } from "../atoms/chatbotAtom";
-import Image from "next/image";
+
+// Import our new 3D component (adjust path if you placed it elsewhere)
+import ThreeDLogo from "./ThreeDLogo";
 
 export function Navbar() {
   const activeSection = useActiveSection();
   const [, setChatbotOpen] = useAtom(chatbotOpenAtom);
   const [, setChatbotMessage] = useAtom(chatbotMessageAtom);
+  
   const navItems = [
     { name: "HOME", href: "#home", id: "home" },
     { name: "Skills", href: "#skills", id: "skills" },
@@ -18,7 +20,7 @@ export function Navbar() {
     { name: "Connect", href: "#connect", id: "connect" },
   ];
 
-  const handleSunClick = () => {
+  const handleLogoClick = () => {
     const funMessages = [
       "C'mon, the color palette is already nice! 😊",
       "Why change perfection? The current colors are beautiful! ✨",
@@ -42,7 +44,6 @@ export function Navbar() {
     if (targetId === "home") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (targetId === "connect") {
-      // Scroll to the very bottom of the page
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
@@ -101,19 +102,10 @@ export function Navbar() {
                 isActive={activeSection === item.id}
               />
             ))}
-            <motion.button
-              whileHover={{ scale: 10.05 ,y:100}}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Sun icon"
-            >
-              <Image
-                src="/logo.png"
-                height={25}
-                width={25}
-                alt="logo"
-                className="mt-0.5 pointer-events-none"
-              />
-            </motion.button>
+            
+            {/* --- NEW TRUE 3D LOGO --- */}
+            <ThreeDLogo onClick={handleLogoClick} />
+            
           </div>
         </div>
       </motion.div>
