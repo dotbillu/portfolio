@@ -12,7 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="m-0 p-0 bg-[#FFF1EB]">
         <FullScreenProvider>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+          <SmoothScrollProvider> {children}</SmoothScrollProvider>
           <Analytics />
         </FullScreenProvider>
       </body>
