@@ -1,24 +1,43 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-// Import useGLTF when you have your actual 3D model:
-// import { useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 
-function InteractiveModel() {
+useGLTF.preload("/logo3d.glb");
+
+function InteractiveModel({ containerRef }: { containerRef: React.RefObject<HTMLDivElement | null> }) {
   const modelRef = useRef<THREE.Group>(null);
+  const { scene } = useGLTF("/logo3d.glb");
+  const mouse = useRef({ x: 0, y: 0 });
 
-  // 🛑 WHEN YOU GET YOUR 3D LOGO (.glb file):
-  // 1. Put 'logo.glb' in your public folder.
-  // 2. Uncomment this line:
-  // const { scene } = useGLTF('/logo.glb');
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      mouse.current.x = Math.max(-1, Math.min(1, (e.clientX - centerX) / (window.innerWidth / 2)));
+      mouse.current.y = Math.max(-1, Math.min(1, -(e.clientY - centerY) / (window.innerHeight / 2)));
+    };
+    const handleMouseLeave = () => {
+      mouse.current.x = 0;
+      mouse.current.y = 0;
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [containerRef]);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (!modelRef.current) return;
 
-    // state.pointer tracks the mouse globally across the screen from -1 to 1
-    const targetX = state.pointer.x * 0.8; 
-    const targetY = state.pointer.y * 0.8; 
+    const targetX = mouse.current.x * 0.25;
+    const targetY = mouse.current.y * 0.25;
 
     // Smoothly interpolate current rotation towards the mouse target
     modelRef.current.rotation.y = THREE.MathUtils.lerp(modelRef.current.rotation.y, targetX, 0.1);
@@ -27,30 +46,24 @@ function InteractiveModel() {
 
   return (
     <group ref={modelRef}>
-      {/* 🛑 REPLACE THIS ENTIRE <mesh> BLOCK WITH YOUR MODEL LATER: */}
-      {/* <primitive object={scene} scale={1.5} /> */}
-
-      {/* --- TEMPORARY 3D SHAPE: A dark cone representing the "nose" --- */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <coneGeometry args={[1, 2, 4]} />
-        <meshStandardMaterial color="#222222" flatShading />
-      </mesh>
+      <primitive object={scene} scale={1.5} rotation={[0, -100 * (Math.PI / 180), 0]} />
     </group>
   );
 }
 
 export default function ThreeDLogo({ onClick }: { onClick: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   return (
-    <div 
-      onClick={onClick}
-      className="relative z-50 cursor-pointer transition-transform hover:scale-110 active:scale-95"
-      style={{ width: "40px", height: "40px" }}
+    <div
+      ref={containerRef}
+      className="absolute z-50  transition-transform mt-30 right-0 bg-pink"
+      style={{ width: "200px", height: "200px" }}
       aria-label="Interactive 3D Logo"
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 5, 5]} intensity={2} />
-        <InteractiveModel />
+        <InteractiveModel containerRef={containerRef} />
       </Canvas>
     </div>
   );
