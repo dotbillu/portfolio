@@ -3,10 +3,16 @@ import React, { useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
+import { useAtomValue } from "jotai";
+import { showProjectBubbleAtom } from "../store";
 
 useGLTF.preload("/logo3d.glb");
 
-function InteractiveModel({ containerRef }: { containerRef: React.RefObject<HTMLDivElement | null> }) {
+function InteractiveModel({
+  containerRef,
+}: {
+  containerRef: React.RefObject<HTMLDivElement | null>;
+}) {
   const modelRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/logo3d.glb");
   const mouse = useRef({ x: 0, y: 0 });
@@ -18,8 +24,14 @@ function InteractiveModel({ containerRef }: { containerRef: React.RefObject<HTML
       const rect = el.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      mouse.current.x = Math.max(-1, Math.min(1, (e.clientX - centerX) / (window.innerWidth / 2)));
-      mouse.current.y = Math.max(-1, Math.min(1, -(e.clientY - centerY) / (window.innerHeight / 2)));
+      mouse.current.x = Math.max(
+        -1,
+        Math.min(1, (e.clientX - centerX) / (window.innerWidth / 2)),
+      );
+      mouse.current.y = Math.max(
+        -1,
+        Math.min(1, -(e.clientY - centerY) / (window.innerHeight / 2)),
+      );
     };
     const handleMouseLeave = () => {
       mouse.current.x = 0;
@@ -40,18 +52,38 @@ function InteractiveModel({ containerRef }: { containerRef: React.RefObject<HTML
     const targetY = mouse.current.y * 0.25;
 
     // Smoothly interpolate current rotation towards the mouse target
-    modelRef.current.rotation.y = THREE.MathUtils.lerp(modelRef.current.rotation.y, targetX, 0.1);
-    modelRef.current.rotation.x = THREE.MathUtils.lerp(modelRef.current.rotation.x, -targetY, 0.1);
+    modelRef.current.rotation.y = THREE.MathUtils.lerp(
+      modelRef.current.rotation.y,
+      targetX,
+      0.1,
+    );
+    modelRef.current.rotation.x = THREE.MathUtils.lerp(
+      modelRef.current.rotation.x,
+      -targetY,
+      0.1,
+    );
   });
 
   return (
     <group ref={modelRef}>
-      <primitive object={scene} scale={1.5} rotation={[0, -100 * (Math.PI / 180), 0]} />
+      <primitive
+        object={scene}
+        scale={1.5}
+        rotation={[0, -100 * (Math.PI / 180), 0]}
+      />
     </group>
   );
 }
 
-export default function ThreeDLogo({ onClick, activeSection }: { onClick: () => void; activeSection: string }) {
+export default function ThreeDLogo({
+  onClick,
+  activeSection,
+  sectionOffset,
+}: {
+  onClick: () => void;
+  activeSection: string;
+  sectionOffset: number;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const bubbleMessages: Record<string, string> = {
@@ -59,8 +91,10 @@ export default function ThreeDLogo({ onClick, activeSection }: { onClick: () => 
     projects: "Damn Nice Projects!",
   };
   const bubbleText = bubbleMessages[activeSection] || "";
-  const showBubble = !!bubbleText;
+  const showProjectBubble = useAtomValue(showProjectBubbleAtom);
 
+  const showBubble =
+    !!bubbleText && (activeSection !== "projects" || showProjectBubble);
   return (
     <div
       ref={containerRef}

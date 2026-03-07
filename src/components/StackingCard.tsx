@@ -1,11 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { motion, useTransform, MotionValue, AnimatePresence } from "framer-motion";
+import { motion, useTransform, MotionValue, AnimatePresence, useMotionValueEvent } from "framer-motion";
 import { Card2D } from "./Card2D";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CardData } from "./PortfolioDeck";
 import { Lightbox } from "./Lightbox";
 import { useFullScreen } from "../context/FullScreenContext";
+import { useSetAtom } from "jotai";
+import { showProjectBubbleAtom } from "../store";
 
 interface StackingCardProps {
   card: CardData;
@@ -31,6 +33,28 @@ export const StackingCard = ({
   const [imgIndex, setImgIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const { setFullScreen } = useFullScreen();
+  const setShowProjectBubble = useSetAtom(showProjectBubbleAtom);
+
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const activeCardIndex = progress * (totalCards - 1);
+    const distance = index - activeCardIndex;
+
+    // We only want the bubble if the active card is "Scrib-Draw" OR "Caelivisio" (indices 1 and 2, assuming Slyme is 0, Scrib-Draw is 1, Caelivisio is 2, KeyBlast is 3)
+    // To handle it simply:
+    if (card.title === "Scrib-Draw" || card.title === "Caelivisio") {
+      // If the scroll is past Slyme (approaching Scrib-Draw => activeCardIndex ~ 1)
+      // and before KeyBlast (activeCardIndex ~ 3). We check the global activeCardIndex.
+      if (activeCardIndex >= 0.8 && activeCardIndex < 2.5) {
+        setShowProjectBubble(true);
+      } else {
+        setShowProjectBubble(false);
+      }
+    } else if (card.title === "KeyBlast" && activeCardIndex >= 2.5) {
+      setShowProjectBubble(false);
+    } else if (card.title === "lyme" && activeCardIndex < 0.8) {
+      setShowProjectBubble(false);
+    }
+  });
 
   const handleOpenLightbox = () => {
     setIsLightboxOpen(true);
@@ -147,7 +171,7 @@ export const StackingCard = ({
             {/* Right Column: Image */}
             <div className="hidden md:flex flex-col items-center justify-start pt-10 w-full h-full relative">
               <div className="w-full relative group flex flex-col items-center">
-                
+
                 {/* FIX: Added min-h-[300px]. 
                   This forces the container to stay open even when the image unmounts 
                   during the animation, preventing the arrows from jumping.
@@ -202,11 +226,10 @@ export const StackingCard = ({
                           e.stopPropagation();
                           setImgIndex(idx);
                         }}
-                        className={`w-1.5 h-1.5 rounded-full transition-all shadow-sm ${
-                          idx === imgIndex
-                            ? "bg-slate-900 scale-125"
-                            : "bg-slate-300 hover:bg-slate-400"
-                        }`}
+                        className={`w-1.5 h-1.5 rounded-full transition-all shadow-sm ${idx === imgIndex
+                          ? "bg-slate-900 scale-125"
+                          : "bg-slate-300 hover:bg-slate-400"
+                          }`}
                       />
                     ))}
                   </div>

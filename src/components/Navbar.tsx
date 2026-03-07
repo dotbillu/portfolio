@@ -12,6 +12,7 @@ export function Navbar() {
   const activeSection = useActiveSection();
   const [, setChatbotOpen] = useAtom(chatbotOpenAtom);
   const [, setChatbotMessage] = useAtom(chatbotMessageAtom);
+  const [sectionOffset, setSectionOffset] = useState(0);
 
   const navItems = [
     { name: "HOME", href: "#home", id: "home" },
@@ -65,7 +66,22 @@ export function Navbar() {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = document.getElementById(activeSection);
+      if (!section) return;
 
+      const sectionTop = section.offsetTop;
+      const offset = window.scrollY - sectionTop;
+
+      setSectionOffset(Math.max(0, offset));
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [activeSection]);
   useEffect(() => {
     setIsMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -104,8 +120,11 @@ export function Navbar() {
             ))}
 
             {/* --- NEW TRUE 3D LOGO --- */}
-            <ThreeDLogo onClick={handleLogoClick} activeSection={activeSection} />
-
+            <ThreeDLogo
+              onClick={handleLogoClick}
+              activeSection={activeSection}
+              sectionOffset={sectionOffset}
+            />
           </div>
         </div>
       </motion.div>
