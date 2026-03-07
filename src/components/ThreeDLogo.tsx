@@ -51,12 +51,20 @@ function InteractiveModel({ containerRef }: { containerRef: React.RefObject<HTML
   );
 }
 
-export default function ThreeDLogo({ onClick }: { onClick: () => void }) {
+export default function ThreeDLogo({ onClick, activeSection }: { onClick: () => void; activeSection: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const bubbleMessages: Record<string, string> = {
+    skills: "Ooo.. Bros packing ",
+    projects: "Damn Nice Projects!",
+  };
+  const bubbleText = bubbleMessages[activeSection] || "";
+  const showBubble = !!bubbleText;
+
   return (
     <div
       ref={containerRef}
-      className="absolute z-50  transition-transform mt-30 right-0 bg-pink"
+      className="absolute  transition-transform mt-30 right-0 bg-pink"
       style={{ width: "200px", height: "200px" }}
       aria-label="Interactive 3D Logo"
     >
@@ -65,6 +73,48 @@ export default function ThreeDLogo({ onClick }: { onClick: () => void }) {
         <directionalLight position={[5, 5, 5]} intensity={2} />
         <InteractiveModel containerRef={containerRef} />
       </Canvas>
+
+      <div
+        style={{
+          position: "absolute",
+          top: "150px",
+          left: "50%",
+          transform: `translateX(-50%) scale(${showBubble ? 1 : 0})`,
+          opacity: showBubble ? 1 : 0,
+          transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          transformOrigin: "top center",
+          pointerEvents: "none",
+        }}
+      >
+        <div
+          style={{
+            background: "white",
+            borderRadius: "19px",
+            padding: "9px 14px",
+            fontSize: "14px",
+            fontWeight: 601,
+            color: "#334",
+            boxShadow: "1 2px 12px rgba(0,0,0,0.12)",
+            whiteSpace: "nowrap",
+            position: "relative",
+          }}
+        >
+          {bubbleText}
+          {/* Triangle pointer */}
+          <div
+            style={{
+              position: "absolute",
+              top: "-6px",
+              left: "50%",
+              transform: "translateX(-50%) rotate(45deg)",
+              width: "12px",
+              height: "12px",
+              background: "white",
+              boxShadow: "-2px -2px 4px rgba(0,0,0,0.06)",
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

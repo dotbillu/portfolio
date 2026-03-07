@@ -12,7 +12,7 @@ export function Navbar() {
   const activeSection = useActiveSection();
   const [, setChatbotOpen] = useAtom(chatbotOpenAtom);
   const [, setChatbotMessage] = useAtom(chatbotMessageAtom);
-  
+
   const navItems = [
     { name: "HOME", href: "#home", id: "home" },
     { name: "Skills", href: "#skills", id: "skills" },
@@ -102,10 +102,10 @@ export function Navbar() {
                 isActive={activeSection === item.id}
               />
             ))}
-            
+
             {/* --- NEW TRUE 3D LOGO --- */}
-            <ThreeDLogo onClick={handleLogoClick} />
-            
+            <ThreeDLogo onClick={handleLogoClick} activeSection={activeSection} />
+
           </div>
         </div>
       </motion.div>
@@ -118,11 +118,10 @@ function NavItem({ item, handleScroll, isHome, isActive }: any) {
     <motion.a
       href={item.href}
       onClick={(e) => handleScroll(e, item.href)}
-      className={`relative group transition-colors duration-200 p-1 ${
-        isHome
+      className={`relative group transition-colors duration-200 p-1 ${isHome
           ? "font-bold text-xl text-gray-800"
           : "text-sm font-medium text-gray-700"
-      } hover:text-black`}
+        } hover:text-black`}
       initial="initial"
       whileHover="hover"
     >

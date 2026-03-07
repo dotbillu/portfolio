@@ -45,7 +45,7 @@ const cardsData: CardData[] = [
       "/slyme6.png",
     ],
     links: [
-      { href: "https://slyme-eosin.vercel.app/", label: "Live Demo" },
+      { href: "https://slyme.dotbillu.in", label: "Live Demo" },
       { href: "https://github.com/dotbillu/slyme", label: "GitHub" },
     ],
   },
@@ -70,7 +70,7 @@ const cardsData: CardData[] = [
     ],
     imgs: ["/scribdrw1.png", "/scribdrw2.png"],
     links: [
-      { href: "https://scrib-draw-web.vercel.app/", label: "Live Demo" },
+      { href: "https://scribdraw.dotbillu.in/", label: "Live Demo" },
       { href: "https://github.com/dotbillu/Scrib-draw", label: "GitHub" },
     ],
   },
@@ -93,7 +93,7 @@ const cardsData: CardData[] = [
     ],
     imgs: ["/caelivisio.png"],
     links: [
-      { href: "https://webcaelivisio.vercel.app/", label: "Live Demo" },
+      { href: "https://caelivisio.dotbillu.in/", label: "Live Demo" },
       { href: "https://github.com/dotbillu/webcaelivisio", label: "GitHub" },
     ],
   },
