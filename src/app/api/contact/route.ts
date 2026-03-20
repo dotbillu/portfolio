@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,89 +8,90 @@ export async function POST(request: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email address' },
-        { status: 400 }
+        { error: "Invalid email address" },
+        { status: 400 },
       );
     }
 
-    const emailContent = explanation || message || 'User wants to connect from portfolio chatbot';
-    
-    console.log('New contact request:', {
-      email,
-      explanation: emailContent,
-      timestamp: new Date().toISOString(),
-    });
+    const rawContent =
+      explanation || message || "User wants to connect from portfolio chatbot";
+
+    if (rawContent.length > 1000) {
+      return NextResponse.json({ error: "Message too long" }, { status: 400 });
+    }
+
+    const emailContent = rawContent.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     if (!process.env.RESEND_API_KEY) {
-      console.log('Note: RESEND_API_KEY not configured. Email not sent, but request logged.');
-      
       return NextResponse.json({
         success: true,
-        message: 'Contact request received successfully!'
+        message: "Contact request received (email disabled)",
       });
     }
 
-    try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      
-      const { data, error } = await resend.emails.send({
-        from: 'Portfolio Contact <onboarding@resend.dev>',
-        to: 'abhaayjha@gmail.com',
-        replyTo: email,
-        subject: `New Contact Request from ${email}`,
-        html: `
-          <h2>New Contact Request from Portfolio</h2>
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    await resend.emails.send({
+      from: "Abhay <abhay@dotbillu.in>",
+      to: "abhay@dotbillu.in",
+      replyTo: email,
+      subject: `New message from ${email}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>New Contact Request</h2>
           <p><strong>From:</strong> ${email}</p>
           <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
           <hr>
-          <h3>Message:</h3>
-          <p>${emailContent.replace(/\n/g, '<br>')}</p>
-          <hr>
-          <p><small>This email was sent from your portfolio website chatbot.</small></p>
-        `,
-        text: `
-New Contact Request from Portfolio
+          <p>${emailContent.replace(/\n/g, "<br>")}</p>
+        </div>
+      `,
+      text: `
+New Contact Request
 
 From: ${email}
 Date: ${new Date().toLocaleString()}
 
 Message:
 ${emailContent}
+      `,
+    });
 
----
-This email was sent from your portfolio website chatbot.
-        `,
-      });
+    await resend.emails.send({
+      from: "Abhay <abhay@dotbillu.in>",
+      to: email,
+      subject: "Thanks for reaching out",
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>Hey 👋</h2>
+          <p>Thanks for reaching out — I’ve received your message.</p>
+          <p>I’ll get back to you as soon as possible.</p>
+          <hr>
+          <p><strong>Your message:</strong></p>
+          <p>${emailContent.replace(/\n/g, "<br>")}</p>
+        </div>
+      `,
+      text: `
+Hey,
 
-      if (error) {
-        console.error('Resend error:', error);
-        console.log('New contact request (email failed to send):', {
-          email,
-          explanation: emailContent,
-          timestamp: new Date().toISOString(),
-        });
-        
-        return NextResponse.json({
-          success: true,
-          message: 'Contact request received successfully!'
-        });
-      }
+Thanks for reaching out — I’ve received your message.
 
-      console.log('Email sent successfully:', data);
-    } catch (resendError) {
-      console.error('Resend initialization/sending error:', resendError);
-    }
+I’ll get back to you soon.
+
+Your message:
+${emailContent}
+
+— Abhay
+      `,
+    });
 
     return NextResponse.json({
       success: true,
-      message: 'Contact request received and email sent successfully!'
+      message: "Contact request sent successfully!",
     });
-
   } catch (error) {
-    console.error('Contact API error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: "Internal server error" },
+      { status: 500 },
     );
   }
 }
