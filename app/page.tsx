@@ -6,12 +6,12 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { Navbar } from "../components/ui/Navbar";
-import { HeroAndSkillsContainer } from "../components/HeroAndSkillsContainer";
-import { PortfolioDeck } from "../components/PortfolioDeck";
-import { ConnectSection } from "../components/ConnectSection";
-import { Chatbot } from "../components/Chatbot";
-import { useFullScreen } from "../context/FullScreenContext";
+import { Navbar } from "./components/ui/Navbar";
+import { HeroAndSkillsContainer } from "./components/HeroAndSkillsContainer";
+import { PortfolioDeck } from "./components/PortfolioDeck";
+import { ConnectSection } from "./components/ConnectSection";
+import { Chatbot } from "./components/Chatbot";
+import { useFullScreen } from "./context/FullScreenContext";
 
 export default function Home() {
   const { scrollYProgress: pageScrollProgress } = useScroll();
