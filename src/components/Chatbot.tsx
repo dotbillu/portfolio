@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAtom } from "jotai";
 import { MessageCircle, X, Send, Mail } from "lucide-react";
-import { chatbotOpenAtom, chatbotMessageAtom } from "../atoms/chatbotAtom";
+import { chatbotOpenAtom, chatbotMessageAtom } from "../store";
 
 interface Message {
   id: string;
