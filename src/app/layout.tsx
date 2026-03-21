@@ -1,6 +1,6 @@
 import "./globals.css";
 import { FullScreenProvider } from "../context/FullScreenContext";
-import { SmoothScrollProvider } from "../components/SmoothScrollProvider";
+import { SmoothScrollProvider } from "../components/ui/SmoothScrollProvider";
 import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({

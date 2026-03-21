@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { StackingCard } from "./StackingCard";
+import { StackingCard } from "./ui/StackingCard";
 
 export interface CardData {
   id: string;

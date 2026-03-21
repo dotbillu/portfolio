@@ -62,7 +62,7 @@ ${emailContent}
       subject: "Thanks for reaching out",
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-          <h2>Hey 👋</h2>
+          <h2>Hey </h2>
           <p>Thanks for reaching out — I’ve received your message.</p>
           <p>I’ll get back to you as soon as possible.</p>
           <hr>

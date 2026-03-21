@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useScroll } from "framer-motion";
-import { HeroContent } from "./HeroContent";
-import { SkillsContent } from "./SkillsContent";
+import { HeroContent } from "./ui/HeroContent";
+import { SkillsContent } from "./ui/SkillsContent";
 
 export function HeroAndSkillsContainer() {
   const targetRef = useRef(null);

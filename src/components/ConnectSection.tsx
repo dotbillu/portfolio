@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { SiGithub, SiLinkedin, SiLeetcode, SiCodeforces, SiHashnode, SiDiscord } from "react-icons/si";
 import { FaChess, FaTwitter } from "react-icons/fa";
-import { ConnectCard } from "./ConnectCard";
+import { ConnectCard } from "./ui/ConnectCard";
 
 export function ConnectSection() {
   const targetRef = useRef(null);

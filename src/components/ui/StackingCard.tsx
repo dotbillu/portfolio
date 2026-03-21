@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { motion, useTransform, MotionValue, AnimatePresence, useMotionValueEvent } from "framer-motion";
 import { Card2D } from "./Card2D";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { CardData } from "./PortfolioDeck";
+import { CardData } from "../PortfolioDeck";
 import { Lightbox } from "./Lightbox";
-import { useFullScreen } from "../context/FullScreenContext";
+import { useFullScreen } from "../../context/FullScreenContext";
 import { useSetAtom } from "jotai";
-import { showProjectBubbleAtom } from "../store";
+import { showProjectBubbleAtom } from "../../store";
 
 interface StackingCardProps {
   card: CardData;

@@ -6,7 +6,7 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../components/ui/Navbar";
 import { HeroAndSkillsContainer } from "../components/HeroAndSkillsContainer";
 import { PortfolioDeck } from "../components/PortfolioDeck";
 import { ConnectSection } from "../components/ConnectSection";

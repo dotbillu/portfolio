@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { useActiveSection } from "../hooks/useActiveSection";
-import { chatbotOpenAtom, chatbotMessageAtom } from "../atoms/chatbotAtom";
+import { useActiveSection } from "../../hooks/useActiveSection";
+import { chatbotOpenAtom, chatbotMessageAtom } from "../../atoms/chatbotAtom";
 
 // Import our new 3D component (adjust path if you placed it elsewhere)
 import ThreeDLogo from "./ThreeDLogo";
